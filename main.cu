@@ -18,6 +18,30 @@ int hawks = 10;
 int doves = 10;
 int generations = 100;
 
+__device__ void contestGPU(int strat1, int strat2, int &output)
+{
+    if (strat1 == 1 && strat2 == 1)
+    { // Both players choose Hawk
+      // The cost is paid prior to calling this method.
+    }
+    else if (strat1 == 1 && strat2 == 0)
+    { // Hawk vs Dove
+        output = HAWK_VS_DOVE_PAYOFF;
+    }
+    else if (strat1 == 0 && strat2 == 1)
+    { // Dove vs Hawk
+        output = DOVE_VS_HAWK_PAYOFF;
+    }
+    else if (strat1 == 0 && strat2 == 0)
+    { // Both players choose Dove
+        output = DOVE_VS_DOVE_PAYOFF;
+    }
+    else
+    {
+        output = FULL_PAYOFF;
+    }
+}
+
 __global__ void hawkDoveKernel(int *strategies, int *score, int numBirds)
 {
     int idx = threadIdx.x + blockIdx.x * blockDim.x;
@@ -28,26 +52,7 @@ __global__ void hawkDoveKernel(int *strategies, int *score, int numBirds)
         int opponent_strategy = strategies[(idx + 1) % numBirds]; // Simple opponent selection
 
         // Determine score based on strategies
-        if (my_strategy == 1 && opponent_strategy == 1)
-        { // Both players choose Hawk
-          // The cost is paid prior to calling this method.
-        }
-        else if (my_strategy == 1 && opponent_strategy == 0)
-        { // Hawk vs Dove
-            score[idx] = HAWK_VS_DOVE_PAYOFF;
-        }
-        else if (my_strategy == 0 && opponent_strategy == 1)
-        { // Dove vs Hawk
-            score[idx] = DOVE_VS_HAWK_PAYOFF;
-        }
-        else if (my_strategy == 0 && opponent_strategy == 0)
-        { // Both players choose Dove
-            score[idx] = DOVE_VS_DOVE_PAYOFF;
-        }
-        else
-        {
-            score[idx] = FULL_PAYOFF;
-        }
+        contestGPU(my_strategy, opponent_strategy, score[idx]);
     }
 }
 
