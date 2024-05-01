@@ -526,19 +526,19 @@ void GetIntFromRange(int lower, int upper, int &input)
 
 int main()
 {
-    std::cout << "Please provide bushes to seed the environment; " << std::endl;
-    GetIntFromRange(1, 100, bushes);
-    std::cout << std::endl
-              << "Please provide hawks to seed the environment; " << std::endl;
-    GetIntFromRange(1, 100, hawks);
-    std::cout << std::endl
-              << "Please provide doves to seed the environment; " << std::endl;
-    GetIntFromRange(1, 100, doves);
-    std::cout << std::endl
-              << "Please provide generations to run; " << std::endl;
-    GetIntFromRange(1, 1000, generations);
+    // std::cout << "Please provide bushes to seed the environment; " << std::endl;
+    // GetIntFromRange(1, 100, bushes);
+    // std::cout << std::endl
+    //           << "Please provide hawks to seed the environment; " << std::endl;
+    // GetIntFromRange(1, 100, hawks);
+    // std::cout << std::endl
+    //           << "Please provide doves to seed the environment; " << std::endl;
+    // GetIntFromRange(1, 100, doves);
+    // std::cout << std::endl
+    //           << "Please provide generations to run; " << std::endl;
+    // GetIntFromRange(1, 1000, generations);
 
-    printf("Bushes, hawks, doves, and generations are now %i, %i, %i, %i \n", bushes, hawks, doves, generations);
+    // printf("Bushes, hawks, doves, and generations are now %i, %i, %i, %i \n", bushes, hawks, doves, generations);
 
     std::cout << "Runing CPU" << std::endl;
     runCpu();
