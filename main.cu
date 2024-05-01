@@ -12,6 +12,11 @@
 #define HAWK_VS_DOVE_PAYOFF 15
 #define DOVE_VS_HAWK_PAYOFF 5
 #define DOVE_VS_DOVE_PAYOFF 10
+// Defaults
+int bushes = 60;
+int hawks = 10;
+int doves = 10;
+int generations = 100;
 
 __global__ void hawkDoveKernel(int *strategies, int *score, int numBirds)
 {
@@ -400,10 +405,6 @@ void NightCycle(std::vector<Bird> &array)
 int runCpu()
 {
     std::vector<Bird> arr;
-    int bushes = 60;
-    int hawks = 10;
-    int doves = 10;
-    int generations = 100;
 
     vectorAddMultiples(arr, doves, Strategy::Share);
     vectorAddMultiples(arr, hawks, Strategy::Steal);
@@ -457,10 +458,6 @@ void printTestInfo(std::vector<Bird> &arr)
 void runGPU()
 {
     std::vector<Bird> arr;
-    int bushes = 60;
-    int hawks = 10;
-    int doves = 10;
-    int generations = 100;
 
     vectorAddMultiples(arr, doves, Strategy::Share);
     vectorAddMultiples(arr, hawks, Strategy::Steal);
@@ -499,10 +496,51 @@ void runGPU()
               << duration.count() / generations << " microseconds" << std::endl;
 }
 
+void GetIntFromRange(int lower, int upper, int &input)
+{
+    std::cout << "Please give me a number between " << lower << " and " << upper << ": " << std::flush;
+
+    // First error catch. If it's not an integer, don't even let it get to bounds control
+    while (!(std::cin >> input))
+    {
+        std::cout << "Wrong Input Type. Please try again.\n";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    // Bounds control
+    while (input < lower || input > upper)
+    {
+        std::cout << "Out of Range. Re-enter option: ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // Second error catch. If out of range integer was entered, and then a non-integer this second one shall catch it
+        while (!(std::cin >> input))
+        {
+            std::cout << "Wrong Input Type. Please try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+}
+
 int main()
 {
-    std::cout << "Runing CPU" << std::endl;
+    std::cout << "Please provide bushes to seed the environment; " << std::endl;
+    GetIntFromRange(1, 100, bushes);
+    std::cout << std::endl
+              << "Please provide hawks to seed the environment; " << std::endl;
+    GetIntFromRange(1, 100, hawks);
+    std::cout << std::endl
+              << "Please provide doves to seed the environment; " << std::endl;
+    GetIntFromRange(1, 100, doves);
+    std::cout << std::endl
+              << "Please provide generations to run; " << std::endl;
+    GetIntFromRange(1, 1000, generations);
 
+    printf("Bushes, hawks, doves, and generations are now %i, %i, %i, %i \n", bushes, hawks, doves, generations);
+
+    std::cout << "Runing CPU" << std::endl;
     runCpu();
 
     std::cout << "\n Runing GPU" << std::endl;
