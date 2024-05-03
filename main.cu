@@ -181,27 +181,14 @@ void contest(Bird &first, Bird &second, int v, int c)
     if (first.getStrategy() == Strategy::Share && second.getStrategy() == Strategy::Share)
     {
         // std::cout << "Both are Doves, share resources \n";
-        first.setScore(first.getScore() + (v / 2));
-        second.setScore(second.getScore() + (v / 2));
+        first.setScore(first.getScore() + (v * .5));
+        second.setScore(second.getScore() + (v * .5));
     }
     else if (first.getStrategy() == Strategy::Steal && second.getStrategy() == Strategy::Steal)
     {
-        // Cost is paid in the day cycle
-        // If there's an update to move the cost into this method, this'll be used.
-        // {
-        //     if (rand() % 2 == 1)
-        //     {
-        //         // std::cout << "Both are Hawks, but first won \n";
-        //         first.setScore(first.getScore() + v);
-        //         second.setScore(second.getScore() - c);
-        //     }
-        //     else
-        //     {
-        //         // std::cout << "Both are Hawks, but 2nd won \n";
-        //         first.setScore(first.getScore() - c);
-        //         second.setScore(second.getScore() + v);
-        //     }
-        // }
+        // std::cout << "Both are Hawks, waste energy fighting \n";
+        first.setScore(first.getScore() + 0);
+        second.setScore(second.getScore() + 0);
     }
     else if (first.getStrategy() == Strategy::Share && second.getStrategy() == Strategy::Steal)
     {
